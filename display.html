@@ -224,7 +224,7 @@ function unlockVoice(){
 }
 
 function nextRegular(){ 
-    const bell = new Audio('bell.wav'); bell.volume = 0.5; bell.play();
+    const bell = new Audio('bell2.mp3'); bell.volume = 0.5; bell.play();
     unlockVoice();
     regCounter++; 
     const number = "R-" + String(regCounter).padStart(3,"0");
@@ -330,4 +330,5 @@ setInterval(refreshDisplay, 1000);
 
 </body>
 </html>
+
 
