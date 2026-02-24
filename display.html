@@ -229,7 +229,7 @@ function nextRegular(){
     regCounter++; 
     const number = "R-" + String(regCounter).padStart(3,"0");
     document.getElementById("regNow").textContent = number;
-    speak("Now serving regular lane, " + number.replace("-", " ") + ", please proceed to the laboratory.",100);
+    speak("Now serving regular lane, " + number.replace("-", " ") + ", please proceed to extraction area.",100);
 }
 function nextExpress(){ 
     const bell = new Audio('bell.wav'); bell.volume = 0.5; bell.play();
@@ -237,14 +237,14 @@ function nextExpress(){
     expCounter++; 
     const number = "E-" + String(expCounter).padStart(3,"0");
     document.getElementById("expNow").textContent = number;
-    speak("Now serving express lane, " + number.replace("-", " ") + ", please proceed to the laboratory.",100);
+    speak("Now serving express lane, " + number.replace("-", " ") + ", please proceed to extraction area.",100);
 }
 function prevRegular(){ 
     if(regCounter>0){ 
         regCounter--; 
         const number = "R-" + String(regCounter).padStart(3,"0");
         document.getElementById("regNow").textContent = number;
-         speak("Now serving regular lane, " + number.replace("-", " ") + ", please proceed to the laboratory.",100);
+         speak("Now serving regular lane, " + number.replace("-", " ") + ", please proceed to extraction area.",100);
     }
 }
 function prevExpress(){ 
@@ -252,7 +252,7 @@ function prevExpress(){
         expCounter--; 
         const number = "E-" + String(expCounter).padStart(3,"0");
         document.getElementById("expNow").textContent = number;
-         speak("Now serving express lane, " + number.replace("-", " ") + ", please proceed to the laboratory.",100);
+         speak("Now serving express lane, " + number.replace("-", " ") + ", please proceed to extraction area.",100);
     }
 }
 
@@ -330,3 +330,4 @@ setInterval(refreshDisplay, 1000);
 
 </body>
 </html>
+
