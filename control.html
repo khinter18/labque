@@ -340,7 +340,7 @@ function playBell(number){
     // stop any previous speech immediately
     speechSynthesis.cancel();
 
-    const bell = new Audio('bell.wav');
+    const bell = new Audio('bell2.mp3');
     bell.volume = 0.5;
     bell.play();
 
@@ -351,7 +351,7 @@ function playBell(number){
 
             // speak twice
             for(let i=0;i<2;i++){
-                const msg = new SpeechSynthesisUtterance("Now serving " + number.replace("-"," ") + ", please proceed to the laboratory.");
+                const msg = new SpeechSynthesisUtterance("patient number " + number.replace("-"," ") + ", please proceed to extraction area.");
                 msg.voice = femaleVoice;
                 msg.rate = 1;
                 speechSynthesis.speak(msg);
@@ -379,3 +379,4 @@ window.speechSynthesis.onvoiceschanged = ()=>{ speechSynthesis.getVoices(); };
 
 </body>
 </html>
+
