@@ -340,7 +340,7 @@ function playBell(number){
     // stop any previous speech immediately
     speechSynthesis.cancel();
 
-    const bell = new Audio('bell2.mp3');
+    const bell = new Audio('bell2.wav');
     bell.volume = 0.5;
     bell.play();
 
@@ -379,4 +379,5 @@ window.speechSynthesis.onvoiceschanged = ()=>{ speechSynthesis.getVoices(); };
 
 </body>
 </html>
+
 
