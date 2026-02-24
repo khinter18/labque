@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Lab Queue Control</title>
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background-color: #111;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    margin:0;
+}
+h1{
+    text-align:center;
+    font-size:36px;
+    margin-bottom:30px;
+}
+
+/* Lanes container */
+.laneButtons{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+/* Lane control buttons */
+.laneButtons div{
+    display:flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* All control buttons same size */
+button.controlBtn{
+    width: 220px;
+    height: 70px;
+    font-size: 22px;
+    cursor:pointer;
+    border:none;
+    border-radius: 12px;
+    background-color: #40e469;
+    color: #000;
+    transition: transform 0.2s, background 0.2s;
+}
+button.controlBtn:hover{
+    transform: scale(1.05);
+    background-color: #32c255;
+}
+
+/* Reset button separate */
+button#resetBtn{
+    width: 220px;
+    height: 70px;
+    font-size: 22px;
+    cursor:pointer;
+    border:none;
+    border-radius: 12px;
+    background-color: #f97316;
+    color: #fff;
+    margin-top: 30px;
+    transition: transform 0.2s, background 0.2s;
+}
+button#resetBtn:hover{
+    transform: scale(1.05);
+    background-color: #e66110;
+}
+
+/* Status display */
+.status{
+    margin-top: 40px;
+    font-size: 32px;
+    text-align: center;
+}
+
+@media screen and (max-width: 768px){
+    button.controlBtn, button#resetBtn{
+        width: 180px;
+        height: 60px;
+        font-size: 18px;
+    }
+    .status{
+        font-size: 24px;
+    }
+}
+</style>
+</head>
+<body>
+
+<h1>LAB QUEUE CONTROL PANEL</h1>
+
+<div class="laneButtons">
+    <div>
+        <button class="controlBtn" onclick="prevRegular()">⬅ Previous Regular</button>
+        <button class="controlBtn" onclick="nextRegular()">➡ Next Regular</button>
+    </div>
+    <div>
+        <button class="controlBtn" onclick="prevExpress()">⬅ Previous Express</button>
+        <button class="controlBtn" onclick="nextExpress()">➡ Next Express</button>
+    </div>
+</div>
+
+<!-- Separate Reset button -->
+<button id="resetBtn" onclick="resetQueue()">🔄 Reset Queue</button>
+
+<div class="status">
+    <p>Regular Lane: <span id="regStatus">R-000</span></p>
+    <p>Express Lane: <span id="expStatus">E-000</span></p>
+</div>
+
+<script>
+// --------------------------
+// Queue Counters (Shared)
+// --------------------------
+let regCounter = parseInt(localStorage.getItem("regCounter")) || 0;
+let expCounter = parseInt(localStorage.getItem("expCounter")) || 0;
+
+// update displayed numbers
+function updateDisplay(){
+    document.getElementById("regStatus").textContent = "R-" + String(regCounter).padStart(3,"0");
+    document.getElementById("expStatus").textContent = "E-" + String(expCounter).padStart(3,"0");
+    localStorage.setItem("regCounter", regCounter);
+    localStorage.setItem("expCounter", expCounter);
+}
+
+// --------------------------
+// Lane Controls
+// --------------------------
+function nextRegular(){ regCounter++; updateDisplay(); playBell("R-" + String(regCounter).padStart(3,"0")); }
+function prevRegular(){ if(regCounter>0){ regCounter--; updateDisplay(); playBell("R-" + String(regCounter).padStart(3,"0")); } }
+function nextExpress(){ expCounter++; updateDisplay(); playBell("E-" + String(expCounter).padStart(3,"0")); }
+function prevExpress(){ if(expCounter>0){ expCounter--; updateDisplay(); playBell("E-" + String(expCounter).padStart(3,"0")); } }
+
+// --------------------------
+// Reset Queue
+// --------------------------
+function resetQueue(){
+    if(!confirm("Are you sure you want to reset the queue?")) return;
+    regCounter = 0;
+    expCounter = 0;
+    updateDisplay();
+    const bell = new Audio('bell.wav');
+    bell.volume = 0.5;
+    bell.play();
+}
+
+// --------------------------
+// Bell + Voice Announcement
+// --------------------------
+function playBell(number){
+    // stop any previous speech immediately
+    speechSynthesis.cancel();
+
+    const bell = new Audio('bell.wav');
+    bell.volume = 0.5;
+    bell.play();
+
+    bell.onended = ()=>{
+        setTimeout(()=>{
+            const voices = speechSynthesis.getVoices();
+            let femaleVoice = voices.find(v => /female|zira|samantha|alloy/i.test(v.name)) || voices[0];
+
+            // speak twice
+            for(let i=0;i<2;i++){
+                const msg = new SpeechSynthesisUtterance("Now serving " + number.replace("-"," ") + ", please proceed to the laboratory.");
+                msg.voice = femaleVoice;
+                msg.rate = 1;
+                speechSynthesis.speak(msg);
+            }
+        }, 500);
+    };
+}
+
+// --------------------------
+// Keyboard Shortcuts
+// --------------------------
+document.addEventListener("keydown", function(e){
+    switch(e.key){
+        case "ArrowUp": nextExpress(); break;
+        case "ArrowRight": nextRegular(); break;
+        case "ArrowDown": prevExpress(); break;
+        case "ArrowLeft": prevRegular(); break;
+    }
+});
+
+// initialize display
+updateDisplay();
+window.speechSynthesis.onvoiceschanged = ()=>{ speechSynthesis.getVoices(); };
+</script>
+
+</body>
+</html>
