@@ -6,13 +6,13 @@
 
 <style>
 body{
-    
     font-family:Arial, sans-serif;
     background-image: url('bg.png');
-    size:cover;
     background-size: cover;
+    background-position: center;
     color:white;
     padding:30px;
+    margin:0;
 }
 h1{text-align:center}
 .container{
@@ -20,6 +20,7 @@ h1{text-align:center}
     justify-content:center;
     gap:40px;
     margin-top:30px;
+    flex-wrap: wrap; /* allow wrapping on smaller screens */
 }
 h2{
     font-size: 36px;
@@ -33,48 +34,71 @@ h2{
     height: 600px;
     text-align:center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: all 0.3s ease;
 }
 .now{
     font-size:150px;
     margin:20px 0;
     color:#ffffff;
+    word-wrap: break-word;
 }
 #expNow{
+    position: relative;
+    font-size: 230px;
+    font-weight: bold;
+    top: 10%;
     color:#f97316;
+
+}
+#regNow{
+    position: relative;
+    top: 10%;
+    font-size: 230px;
+    font-weight: bold;
+    color:#ffffff;
 }
 button{
-    position: relative;
-    top: 30%;
     padding:14px 22px;
     font-size:18px;
     cursor:pointer;
     border:none;
     border-radius:8px;
+    margin-top:auto;
+    transition: all 0.2s ease;
+}
+button:hover{
+    transform: scale(1.05);
 }
 h3{
     text-align: center;
     color: #000000;
+    font-size: 40px;
+    font-weight: bold;
 }
 .up{
     display: flex;
     flex-direction: row;
     justify-content: center;
     gap: 50px;
+    flex-wrap: wrap;
+    align-items: center;
 }
-.up #logo{
+.up #logo, .up #lab{
     width: 150px;
     height: auto;
     border-radius: 70px;
 }
-.up #lab{
-    width: 150px;
-    height: auto;
-}
 .ind{
     display: block;
+    text-align: center;
 }
 h1{
     color: #000000;
+    font-size: 50px;
+    font-weight: bold;
 }
 table{
     width: 100%;
@@ -86,21 +110,86 @@ table{
     padding: 20px;
     border-radius: 10px;
     color: #ffffff;
+    text-align: center;
+}
+
+/* ----------------------
+   RESPONSIVE STYLES
+------------------------*/
+@media screen and (max-width: 1600px){
+    .lane{
+        width: 500px;
+        height: 500px;
     }
+    .now{
+        font-size: 120px;
+    }
+    button{
+        font-size: 16px;
+        padding:12px 20px;
+    }
+    h2{
+        font-size: 28px;
+    }
+}
+
+@media screen and (max-width: 1200px){
+    .lane{
+        width: 400px;
+        height: 400px;
+        padding:20px;
+    }
+    .now{
+        font-size: 100px;
+    }
+    button{
+        font-size: 14px;
+        padding:10px 16px;
+    }
+    h2{
+        font-size: 24px;
+    }
+}
+
+@media screen and (max-width: 768px){
+    .container{
+        flex-direction: column;
+        gap: 30px;
+    }
+    .lane{
+        width: 90%;
+        height: auto;
+        padding:20px;
+    }
+    .now{
+        font-size: 80px;
+    }
+    h2{
+        font-size: 20px;
+    }
+    button{
+        font-size: 14px;
+        padding:10px 16px;
+    }
+    .up #logo, .up #lab{
+        width: 100px;
+    }
+    h1{
+        font-size: 22px;
+    }
+}
+
 </style>
 </head>
 <body>
 <div class="up">
     <img src="isdh.jpg" alt="" id="logo">
     <div class="ind">
- <h1>ILOCOS SUR DISTRICT HOSPITAL NARVACAN</h1>
- <h3>LABORATORY QUEUE SYSTEM</h3>
+        <h1>ILOCOS SUR DISTRICT HOSPITAL NARVACAN</h1>
+        <h3>LABORATORY QUEUE SYSTEM</h3>
     </div>
-   
     <img src="lab.png" alt="" id="lab">
 </div>
-
-
 
 <div class="container">
     <div class="lane" id="regularLane">
@@ -116,133 +205,118 @@ table{
     </div>
 </div>
 <div class="ss">
-    <h3>THANK YOU FOR WAITING,PLEASE PREPARE YOUR VALID REQUEST FORM</h3>
+    <h3 id="thankMsg">THANK YOU FOR WAITING, PLEASE PREPARE YOUR VALID REQUEST FORM</h3>
 </div>
+
+ 
+
 
 <script>
 let regCounter = 0;
 let expCounter = 0;
-
-/* voice will be unlocked on first button click */
 let voiceUnlocked = false;
 
 function unlockVoice(){
     if(voiceUnlocked) return;
-
     const u = new SpeechSynthesisUtterance("");
-    speechSynthesis.speak(u);   // must be inside user click
+    speechSynthesis.speak(u);
     voiceUnlocked = true;
 }
 
-/* -------------------------
-   NEXT BUTTONS
---------------------------*/
+function nextRegular(){ 
+    const bell = new Audio('bell.wav'); bell.volume = 0.5; bell.play();
+    unlockVoice();
+    regCounter++; 
+    const number = "R-" + String(regCounter).padStart(3,"0");
+    document.getElementById("regNow").textContent = number;
+    speak("Now serving regular lane, " + number.replace("-", " ") + ", please proceed to the laboratory.",100);
+}
+function nextExpress(){ 
+    const bell = new Audio('bell.wav'); bell.volume = 0.5; bell.play();
+    unlockVoice();
+    expCounter++; 
+    const number = "E-" + String(expCounter).padStart(3,"0");
+    document.getElementById("expNow").textContent = number;
+    speak("Now serving express lane, " + number.replace("-", " ") + ", please proceed to the laboratory.",100);
+}
+function prevRegular(){ 
+    if(regCounter>0){ 
+        regCounter--; 
+        const number = "R-" + String(regCounter).padStart(3,"0");
+        document.getElementById("regNow").textContent = number;
+         speak("Now serving regular lane, " + number.replace("-", " ") + ", please proceed to the laboratory.",100);
+    }
+}
+function prevExpress(){ 
+    if(expCounter>0){ 
+        expCounter--; 
+        const number = "E-" + String(expCounter).padStart(3,"0");
+        document.getElementById("expNow").textContent = number;
+         speak("Now serving express lane, " + number.replace("-", " ") + ", please proceed to the laboratory.",100);
+    }
+}
 
-function nextRegular(){
+function speak(text, delay = 1000){
+    if(!("speechSynthesis" in window)) return;
+    speechSynthesis.cancel();
+
     const bell = new Audio('bell.wav');
     bell.volume = 0.5;
     bell.play();
 
-    unlockVoice();
-
-    regCounter++;
-    const number = "R-" + String(regCounter).padStart(3,"0");
-
-    document.getElementById("regNow").textContent = number;
-
-    speak("patient number, " + number.replace("-", " ") + ", please proceed to the laboratory.");
+    bell.onended = ()=>{
+        setTimeout(()=>{
+            const voices = speechSynthesis.getVoices();
+            let femaleVoice = voices.find(v => /female|zira|samantha|alloy/i.test(v.name)) || voices[0];
+            for(let i=0;i<2;i++){
+                const msg = new SpeechSynthesisUtterance(text);
+                msg.voice = femaleVoice;
+                msg.rate = 1;
+                speechSynthesis.speak(msg);
+            }
+        }, delay);
+    };
 }
 
-function nextExpress(){
-
-    unlockVoice();
-
-    expCounter++;
-    const number = "E-" + String(expCounter).padStart(3,"0");
-
-    document.getElementById("expNow").textContent = number;
-
-    speak("patient number, " + number.replace("-", " ") + ", please proceed to the laboratory.");
-}
-function prevExpress(){
-
-    if(expCounter <= 0) return;
-
-    expCounter--;
-
-    const number = "E-" + String(expCounter).padStart(3,"0");
-    document.getElementById("expNow").textContent = number;
-    speak("Now serving express lane, " + number.replace("-", " "));
-}
-
-function prevRegular(){
-
-    if(regCounter <= 0) return;
-
-    regCounter--;
-
-    const number = "R-" + String(regCounter).padStart(3,"0");
-    document.getElementById("regNow").textContent = number;
-        speak("Now serving regular lane, " + number.replace("-", " "));
-}
-/* -------------------------
-   SPEAK
---------------------------*/
-function speak(text, delay = 1000){
-
-    if(!("speechSynthesis" in window)) return;
-
-    // stop any previous speech
-    speechSynthesis.cancel();
-
-    
-    // get available voices
-    const voices = speechSynthesis.getVoices();
-
-    // try to find a female voice
-    let femaleVoice = voices.find(v =>
-        /female|zira|samantha|alloy/i.test(v.name)
-    );
-
-    // fallback to default
-    if(!femaleVoice) femaleVoice = voices[0];
-
-    // speak twice
-    const msg1 = new SpeechSynthesisUtterance(text);
-    msg1.voice = femaleVoice;
-    msg1.rate = 1;
-
-    const msg2 = new SpeechSynthesisUtterance(text);
-    msg2.voice = femaleVoice;
-    msg2.rate = 1;
-
-    speechSynthesis.speak(msg1);
-    speechSynthesis.speak(msg2);
-}
-document.addEventListener("keydown", function (e) {
-
-    if (e.key === "ArrowUp") {
-        e.preventDefault();
-        nextExpress();       // ⬆ next express
+document.addEventListener("keydown", function(e){
+    switch(e.key){
+        case "ArrowUp": e.preventDefault(); nextExpress(); break;
+        case "ArrowRight": e.preventDefault(); nextRegular(); break;
+        case "ArrowDown": e.preventDefault(); prevExpress(); break;
+        case "ArrowLeft": e.preventDefault(); prevRegular(); break;
     }
-
-    if (e.key === "ArrowRight") {
-        e.preventDefault();
-        nextRegular();      // ➡ next regular
-    }
-
-    if (e.key === "ArrowDown") {
-        e.preventDefault();
-        prevExpress();      // ⬇ back express
-    }
-
-    if (e.key === "ArrowLeft") {
-        e.preventDefault();
-        prevRegular();      // ⬅ back regular
-    }
-
 });
-    function refreshDisplayFromStorage(){
+
+window.speechSynthesis.onvoiceschanged = ()=>{ speechSynthesis.getVoices(); };
+
+
+const thankMsg = document.getElementById("thankMsg");
+const messages = [
+    "THANK YOU FOR WAITING, PLEASE PREPARE YOUR VALID REQUEST FORM",
+    "WE ARE PLEASED TO ASSIST SC, PWD'S, PREGNANT WOMEN, DENGUE PATIENTS WITH PRIORITY SERVICE"
+];
+let msgIndex = 0;
+
+function changeMessage(){
+    // fade out 
+    thankMsg.style.opacity = 0;
+    setTimeout(()=>{
+        msgIndex = (msgIndex + 1) % messages.length;
+        thankMsg.textContent = messages[msgIndex];
+        // fade in
+        thankMsg.style.opacity = 1;
+    }, 500); // half second fade out
+}
+
+// start changing every 5 seconds
+setInterval(changeMessage, 7000);
+
+// initial fade style
+thankMsg.style.transition = "opacity 0.5s ease";
+// --------------------------
+// Auto-update display from localStorage
+// --------------------------
+function refreshDisplay(){
     const regCounter = parseInt(localStorage.getItem("regCounter")) || 0;
     const expCounter = parseInt(localStorage.getItem("expCounter")) || 0;
 
@@ -250,20 +324,9 @@ document.addEventListener("keydown", function (e) {
     document.getElementById("expNow").textContent = "E-" + String(expCounter).padStart(3,"0");
 }
 
-// Initial load
-refreshDisplayFromStorage();
-
-// Listen for changes in localStorage (sync across tabs)
-window.addEventListener("storage", function(e){
-    if(e.key === "regCounter" || e.key === "expCounter"){
-        refreshDisplayFromStorage();
-    }
-});
-
-// Optional: still refresh every second as fallback
-setInterval(refreshDisplayFromStorage, 1000);
+// refresh every second
+setInterval(refreshDisplay, 1000);
 </script>
 
 </body>
 </html>
-
