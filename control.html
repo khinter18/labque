@@ -4,88 +4,271 @@
 <meta charset="UTF-8">
 <title>Lab Queue Control</title>
 <style>
-body{
-    font-family: Arial, sans-serif;
-    background-color: #111;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 30px;
-    margin:0;
+:root{
+    --bg1:#f4f8fb;
+    --bg2:#e9f2f7;
+    --card:#ffffffee;
+    --accent:#5aa6c8;
+    --accent-soft:#cfe7f3;
+    --text:#1f2d3d;
 }
-h1{
-    text-align:center;
-    font-size:36px;
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background:
+        linear-gradient(180deg,var(--bg1),var(--bg2));
+    color:var(--text);
+    padding:40px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+/* HEADER */
+
+.up{
+    display:flex;
+    align-items:center;
+    gap:40px;
+    flex-wrap:wrap;
+    justify-content:center;
     margin-bottom:30px;
 }
 
-/* Lanes container */
+.up img{
+    width:120px;
+    height:auto;
+}
+
+.ind h1{
+    margin:0;
+    font-size:42px;
+    font-weight:600;
+    letter-spacing:1px;
+}
+
+.ind h3{
+    margin-top:8px;
+    font-weight:400;
+    color:#4c6f86;
+}
+
+/* LANES */
+
+.container{
+    display:flex;
+    gap:50px;
+    flex-wrap:wrap;
+    justify-content:center;
+    width:100%;
+    max-width:1600px;
+}
+
+.lane{
+    flex:1 1 420px;
+    min-width:320px;
+    max-width:700px;
+    height:520px;
+
+    background:var(--card);
+    border-radius:28px;
+    padding:40px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    box-shadow:
+        0 25px 50px rgba(0,0,0,0.08);
+    backdrop-filter: blur(8px);
+}
+
+/* titles */
+
+.lane h2{
+    margin:0;
+    margin-bottom:20px;
+    font-size:34px;
+    font-weight:500;
+    letter-spacing:2px;
+    color:#3f6d87;
+}
+
+/* numbers */
+
+.now{
+    font-size:200px;
+    font-weight:600;
+    letter-spacing:4px;
+    margin:10px 0 0 0;
+    line-height:1;
+}
+
+/* regular */
+
+#regNow{
+    color:#2f5f7a;
+}
+
+/* express */
+
+#expNow{
+    color:#c67a2b;
+}
+
+/* footer message */
+
+.ss{
+    margin-top:40px;
+    width:100%;
+    max-width:1200px;
+}
+
+.ss h3{
+    background:linear-gradient(90deg,#d7eef8,#edf7fc);
+    color:#35657f;
+    padding:22px 30px;
+    border-radius:18px;
+    text-align:center;
+    font-weight:500;
+    font-size:26px;
+    letter-spacing:1px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,0.06);
+}
+
+/* subtle breathing animation */
+
+.lane{
+    animation: calmFloat 6s ease-in-out infinite;
+}
+.laneGroup{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+/* shared size */
+.controlBtn{
+    width:260px;
+    height:80px;
+    font-size:22px;
+    font-weight:600;
+    border:none;
+    border-radius:16px;
+    cursor:pointer;
+    transition:all .2s ease;
+    letter-spacing:.5px;
+}
+
+/* REGULAR – calm hospital blue */
+.regularBtn{
+    background:linear-gradient(180deg,#d9f0f7,#9fd4e6);
+    color:#12485f;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+}
+
+.regularBtn:hover{
+    transform:translateY(-3px) scale(1.03);
+    background:linear-gradient(180deg,#e9f7fb,#b6e1ee);
+}
+
+/* EXPRESS – warm priority color */
+.expressBtn{
+    background:linear-gradient(180deg,#ffe1b8,#f7a23a);
+    color:#6a3a00;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+}
+
+.expressBtn:hover{
+    transform:translateY(-3px) scale(1.03);
+    background:linear-gradient(180deg,#fff0d5,#ffb85c);
+}
+
+/* -------------------------
+   BIG RESET BUTTON
+------------------------- */
+
+#resetBtn{
+    margin-top:45px;
+
+    width:420px;
+    height:95px;
+
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:2px;
+
+    border:none;
+    border-radius:20px;
+    cursor:pointer;
+
+    background:linear-gradient(180deg,#ff7a7a,#e53935);
+    color:#fff;
+
+    box-shadow:0 15px 35px rgba(229,57,53,.45);
+    transition:all .2s ease;
+}
+
+#resetBtn:hover{
+    transform:translateY(-4px) scale(1.05);
+    background:linear-gradient(180deg,#ff9a9a,#ff4a4a);
+}
+
 .laneButtons{
     display:flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 30px;
+    flex-direction: row;
+    gap:40px;
+    flex-wrap:wrap;
+    justify-content:center;
 }
+/* mobile */
 
-/* Lane control buttons */
-.laneButtons div{
-    display:flex;
-    flex-direction: column;
-    gap: 15px;
-}
+@media(max-width:768px){
 
-/* All control buttons same size */
-button.controlBtn{
-    width: 220px;
-    height: 70px;
-    font-size: 22px;
-    cursor:pointer;
-    border:none;
-    border-radius: 12px;
-    background-color: #40e469;
-    color: #000;
-    transition: transform 0.2s, background 0.2s;
-}
-button.controlBtn:hover{
-    transform: scale(1.05);
-    background-color: #32c255;
-}
-
-/* Reset button separate */
-button#resetBtn{
-    width: 220px;
-    height: 70px;
-    font-size: 22px;
-    cursor:pointer;
-    border:none;
-    border-radius: 12px;
-    background-color: #f97316;
-    color: #fff;
-    margin-top: 30px;
-    transition: transform 0.2s, background 0.2s;
-}
-button#resetBtn:hover{
-    transform: scale(1.05);
-    background-color: #e66110;
-}
-
-/* Status display */
-.status{
-    margin-top: 40px;
-    font-size: 32px;
-    text-align: center;
-}
-
-@media screen and (max-width: 768px){
-    button.controlBtn, button#resetBtn{
-        width: 180px;
-        height: 60px;
-        font-size: 18px;
+    .controlBtn{
+        width:200px;
+        height:65px;
+        font-size:18px;
     }
-    .status{
-        font-size: 24px;
+
+    #resetBtn{
+        width:90%;
+        height:80px;
+        font-size:24px;
     }
+}
+
+@keyframes calmFloat{
+    0%{ transform:translateY(0);}
+    50%{ transform:translateY(-6px);}
+    100%{ transform:translateY(0);}
+}
+
+/* ----------------- responsive ---------------- */
+
+@media(max-width:1200px){
+    .now{ font-size:150px; }
+    .lane{ height:460px; }
+}
+
+@media(max-width:768px){
+    body{ padding:20px; }
+
+    .ind h1{ font-size:26px; }
+    .ind h3{ font-size:16px; }
+
+    .lane{ height:auto; padding:30px; }
+    .now{ font-size:110px; }
+
+    .ss h3{ font-size:18px; }
 }
 </style>
 </head>
@@ -94,18 +277,20 @@ button#resetBtn:hover{
 <h1>LAB QUEUE CONTROL PANEL</h1>
 
 <div class="laneButtons">
-    <div>
-        <button class="controlBtn" onclick="prevRegular()">⬅ Previous Regular</button>
-        <button class="controlBtn" onclick="nextRegular()">➡ Next Regular</button>
+
+    <div class="laneGroup regularGroup">
+        <button class="controlBtn regularBtn" onclick="prevRegular()">⬅ Previous Regular</button>
+        <button class="controlBtn regularBtn" onclick="nextRegular()">➡ Next Regular</button>
     </div>
-    <div>
-        <button class="controlBtn" onclick="prevExpress()">⬅ Previous Express</button>
-        <button class="controlBtn" onclick="nextExpress()">➡ Next Express</button>
+
+    <div class="laneGroup expressGroup">
+        <button class="controlBtn expressBtn" onclick="prevExpress()">⬅ Previous Express</button>
+        <button class="controlBtn expressBtn" onclick="nextExpress()">➡ Next Express</button>
     </div>
+
 </div>
 
-<!-- Separate Reset button -->
-<button id="resetBtn" onclick="resetQueue()">🔄 Reset Queue</button>
+<button id="resetBtn" onclick="resetQueue()">RESET QUEUE</button>
 
 <div class="status">
     <p>Regular Lane: <span id="regStatus">R-000</span></p>
