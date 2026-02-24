@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Lab Queue Control</title>
+
 <style>
+/* (YOUR DESIGN – unchanged) */
+
 :root{
     --bg1:#f4f8fb;
     --bg2:#e9f2f7;
@@ -13,16 +16,13 @@
     --text:#1f2d3d;
 }
 
-*{
-    box-sizing:border-box;
-}
+*{ box-sizing:border-box; }
 
 body{
     margin:0;
     min-height:100vh;
-    font-family: "Segoe UI", Arial, sans-serif;
-    background:
-        linear-gradient(180deg,var(--bg1),var(--bg2));
+    font-family:"Segoe UI", Arial, sans-serif;
+    background:linear-gradient(180deg,var(--bg1),var(--bg2));
     color:var(--text);
     padding:40px;
     display:flex;
@@ -30,132 +30,25 @@ body{
     align-items:center;
 }
 
-/* HEADER */
+h1{
+    font-size:38px;
+    letter-spacing:2px;
+    margin-bottom:35px;
+}
 
-.up{
+.laneButtons{
     display:flex;
-    align-items:center;
     gap:40px;
     flex-wrap:wrap;
     justify-content:center;
-    margin-bottom:30px;
 }
 
-.up img{
-    width:120px;
-    height:auto;
-}
-
-.ind h1{
-    margin:0;
-    font-size:42px;
-    font-weight:600;
-    letter-spacing:1px;
-}
-
-.ind h3{
-    margin-top:8px;
-    font-weight:400;
-    color:#4c6f86;
-}
-
-/* LANES */
-
-.container{
-    display:flex;
-    gap:50px;
-    flex-wrap:wrap;
-    justify-content:center;
-    width:100%;
-    max-width:1600px;
-}
-
-.lane{
-    flex:1 1 420px;
-    min-width:320px;
-    max-width:700px;
-    height:520px;
-
-    background:var(--card);
-    border-radius:28px;
-    padding:40px;
-
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-
-    box-shadow:
-        0 25px 50px rgba(0,0,0,0.08);
-    backdrop-filter: blur(8px);
-}
-
-/* titles */
-
-.lane h2{
-    margin:0;
-    margin-bottom:20px;
-    font-size:34px;
-    font-weight:500;
-    letter-spacing:2px;
-    color:#3f6d87;
-}
-
-/* numbers */
-
-.now{
-    font-size:200px;
-    font-weight:600;
-    letter-spacing:4px;
-    margin:10px 0 0 0;
-    line-height:1;
-}
-
-/* regular */
-
-#regNow{
-    color:#2f5f7a;
-}
-
-/* express */
-
-#expNow{
-    color:#c67a2b;
-}
-
-/* footer message */
-
-.ss{
-    margin-top:40px;
-    width:100%;
-    max-width:1200px;
-}
-
-.ss h3{
-    background:linear-gradient(90deg,#d7eef8,#edf7fc);
-    color:#35657f;
-    padding:22px 30px;
-    border-radius:18px;
-    text-align:center;
-    font-weight:500;
-    font-size:26px;
-    letter-spacing:1px;
-
-    box-shadow:0 10px 25px rgba(0,0,0,0.06);
-}
-
-/* subtle breathing animation */
-
-.lane{
-    animation: calmFloat 6s ease-in-out infinite;
-}
 .laneGroup{
     display:flex;
     flex-direction:column;
     gap:18px;
 }
 
-/* shared size */
 .controlBtn{
     width:260px;
     height:80px;
@@ -168,7 +61,8 @@ body{
     letter-spacing:.5px;
 }
 
-/* REGULAR – calm hospital blue */
+/* REGULAR */
+
 .regularBtn{
     background:linear-gradient(180deg,#d9f0f7,#9fd4e6);
     color:#12485f;
@@ -180,7 +74,8 @@ body{
     background:linear-gradient(180deg,#e9f7fb,#b6e1ee);
 }
 
-/* EXPRESS – warm priority color */
+/* EXPRESS */
+
 .expressBtn{
     background:linear-gradient(180deg,#ffe1b8,#f7a23a);
     color:#6a3a00;
@@ -192,27 +87,20 @@ body{
     background:linear-gradient(180deg,#fff0d5,#ffb85c);
 }
 
-/* -------------------------
-   BIG RESET BUTTON
-------------------------- */
+/* BIG RESET */
 
 #resetBtn{
     margin-top:45px;
-
     width:420px;
     height:95px;
-
     font-size:30px;
     font-weight:700;
     letter-spacing:2px;
-
     border:none;
     border-radius:20px;
     cursor:pointer;
-
     background:linear-gradient(180deg,#ff7a7a,#e53935);
     color:#fff;
-
     box-shadow:0 15px 35px rgba(229,57,53,.45);
     transition:all .2s ease;
 }
@@ -222,17 +110,13 @@ body{
     background:linear-gradient(180deg,#ff9a9a,#ff4a4a);
 }
 
-.laneButtons{
-    display:flex;
-    flex-direction: row;
-    gap:40px;
-    flex-wrap:wrap;
-    justify-content:center;
+.status{
+    margin-top:35px;
+    font-size:26px;
+    text-align:center;
 }
-/* mobile */
 
 @media(max-width:768px){
-
     .controlBtn{
         width:200px;
         height:65px;
@@ -245,45 +129,28 @@ body{
         font-size:24px;
     }
 }
-
-@keyframes calmFloat{
-    0%{ transform:translateY(0);}
-    50%{ transform:translateY(-6px);}
-    100%{ transform:translateY(0);}
-}
-
-/* ----------------- responsive ---------------- */
-
-@media(max-width:1200px){
-    .now{ font-size:150px; }
-    .lane{ height:460px; }
-}
-
-@media(max-width:768px){
-    body{ padding:20px; }
-
-    .ind h1{ font-size:26px; }
-    .ind h3{ font-size:16px; }
-
-    .lane{ height:auto; padding:30px; }
-    .now{ font-size:110px; }
-
-    .ss h3{ font-size:18px; }
+.status{
+    padding: 20px;
+    background-color: #a8e3ff;
+    border-radius: 10px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-transform: uppercase;
 }
 </style>
 </head>
+
 <body>
 
 <h1>LAB QUEUE CONTROL PANEL</h1>
 
 <div class="laneButtons">
 
-    <div class="laneGroup regularGroup">
+    <div class="laneGroup">
         <button class="controlBtn regularBtn" onclick="prevRegular()">⬅ Previous Regular</button>
         <button class="controlBtn regularBtn" onclick="nextRegular()">➡ Next Regular</button>
     </div>
 
-    <div class="laneGroup expressGroup">
+    <div class="laneGroup">
         <button class="controlBtn expressBtn" onclick="prevExpress()">⬅ Previous Express</button>
         <button class="controlBtn expressBtn" onclick="nextExpress()">➡ Next Express</button>
     </div>
@@ -293,91 +160,202 @@ body{
 <button id="resetBtn" onclick="resetQueue()">RESET QUEUE</button>
 
 <div class="status">
-    <p>Regular Lane: <span id="regStatus">R-000</span></p>
-    <p>Express Lane: <span id="expStatus">E-000</span></p>
+    <p>Regular Lane : <span id="regStatus">R-000</span></p>
+    <p>Express Lane : <span id="expStatus">E-000</span></p>
 </div>
 
 <script>
-// --------------------------
-// Queue Counters (Shared)
-// --------------------------
+/* -------------------------------
+   SHARED COUNTERS
+-------------------------------- */
+
 let regCounter = parseInt(localStorage.getItem("regCounter")) || 0;
 let expCounter = parseInt(localStorage.getItem("expCounter")) || 0;
 
-// update displayed numbers
+
+/* -------------------------------
+   AUDIO CONTROL (GLOBAL)
+-------------------------------- */
+
+let currentBell = null;
+let speakDelayTimer = null;
+
+function stopAllAudio(){
+
+    speechSynthesis.cancel();
+
+    if(currentBell){
+        currentBell.pause();
+        currentBell.currentTime = 0;
+        currentBell = null;
+    }
+
+    if(speakDelayTimer){
+        clearTimeout(speakDelayTimer);
+        speakDelayTimer = null;
+    }
+}
+
+
+/* -------------------------------
+   DISPLAY
+-------------------------------- */
+
 function updateDisplay(){
-    document.getElementById("regStatus").textContent = "R-" + String(regCounter).padStart(3,"0");
-    document.getElementById("expStatus").textContent = "E-" + String(expCounter).padStart(3,"0");
+
+    document.getElementById("regStatus").textContent =
+        "R-" + String(regCounter).padStart(3,"0");
+
+    document.getElementById("expStatus").textContent =
+        "E-" + String(expCounter).padStart(3,"0");
+
     localStorage.setItem("regCounter", regCounter);
     localStorage.setItem("expCounter", expCounter);
 }
 
-// --------------------------
-// Lane Controls
-// --------------------------
-function nextRegular(){ regCounter++; updateDisplay(); playBell("R-" + String(regCounter).padStart(3,"0")); }
-function prevRegular(){ if(regCounter>0){ regCounter--; updateDisplay(); playBell("R-" + String(regCounter).padStart(3,"0")); } }
-function nextExpress(){ expCounter++; updateDisplay(); playBell("E-" + String(expCounter).padStart(3,"0")); }
-function prevExpress(){ if(expCounter>0){ expCounter--; updateDisplay(); playBell("E-" + String(expCounter).padStart(3,"0")); } }
 
-// --------------------------
-// Reset Queue
-// --------------------------
-function resetQueue(){
-    if(!confirm("Are you sure you want to reset the queue?")) return;
-    regCounter = 0;
-    expCounter = 0;
+/* -------------------------------
+   QUEUE BUTTONS
+-------------------------------- */
+
+function nextRegular(){
+    stopAllAudio();
+    regCounter++;
     updateDisplay();
-    const bell = new Audio('bell.wav');
-    bell.volume = 0.5;
-    bell.play();
+    playBell("R-" + String(regCounter).padStart(3,"0"));
 }
 
-// --------------------------
-// Bell + Voice Announcement
-// --------------------------
+function prevRegular(){
+    stopAllAudio();
+    if(regCounter > 0){
+        regCounter--;
+        updateDisplay();
+        playBell("R-" + String(regCounter).padStart(3,"0"));
+    }
+}
+
+function nextExpress(){
+    stopAllAudio();
+    expCounter++;
+    updateDisplay();
+    playBell("E-" + String(expCounter).padStart(3,"0"));
+}
+
+function prevExpress(){
+    stopAllAudio();
+    if(expCounter > 0){
+        expCounter--;
+        updateDisplay();
+        playBell("E-" + String(expCounter).padStart(3,"0"));
+    }
+}
+
+
+/* -------------------------------
+   RESET
+-------------------------------- */
+
+function resetQueue(){
+
+    stopAllAudio();
+
+    if(!confirm("Are you sure you want to reset the queue?")) return;
+
+    regCounter = 0;
+    expCounter = 0;
+
+    updateDisplay();
+
+    currentBell = new Audio("bell2.wav");
+    currentBell.volume = 0.5;
+    currentBell.play();
+}
+
+
+/* -------------------------------
+   BELL + VOICE
+-------------------------------- */
+
 function playBell(number){
-    // stop any previous speech immediately
-    speechSynthesis.cancel();
 
-    const bell = new Audio('bell2.wav');
-    bell.volume = 0.5;
-    bell.play();
+    stopAllAudio();
 
-    bell.onended = ()=>{
-        setTimeout(()=>{
+    currentBell = new Audio("bell2.wav");
+    currentBell.volume = 0.5;
+    currentBell.play();
+
+    currentBell.onended = function(){
+
+        speakDelayTimer = setTimeout(function(){
+
             const voices = speechSynthesis.getVoices();
-            let femaleVoice = voices.find(v => /female|zira|samantha|alloy/i.test(v.name)) || voices[0];
 
-            // speak twice
+            let femaleVoice =
+                voices.find(v =>
+                    /female|zira|samantha|alloy/i.test(v.name)
+                ) || voices[0];
+
             for(let i=0;i<2;i++){
-                const msg = new SpeechSynthesisUtterance("patient number " + number.replace("-"," ") + ", please proceed to extraction area.");
+
+                const msg = new SpeechSynthesisUtterance(
+                    "patient number " +
+                    number.replace("-", " ") +
+                    ", please proceed to the extraction area."
+                );
+
                 msg.voice = femaleVoice;
                 msg.rate = 1;
+
                 speechSynthesis.speak(msg);
             }
-        }, 500);
+
+        },100);   // delay before speaking
     };
 }
 
-// --------------------------
-// Keyboard Shortcuts
-// --------------------------
+
+/* -------------------------------
+   KEYBOARD SHORTCUTS
+-------------------------------- */
+
 document.addEventListener("keydown", function(e){
+
+    if(["ArrowUp","ArrowRight","ArrowDown","ArrowLeft"].includes(e.key)){
+        e.preventDefault();
+        stopAllAudio();
+    }
+
     switch(e.key){
-        case "ArrowUp": nextExpress(); break;
-        case "ArrowRight": nextRegular(); break;
-        case "ArrowDown": prevExpress(); break;
-        case "ArrowLeft": prevRegular(); break;
+
+        case "ArrowUp":      // EXPRESS NEXT
+            nextExpress();
+            break;
+
+        case "ArrowRight":  // REGULAR NEXT
+            nextRegular();
+            break;
+
+        case "ArrowDown":   // EXPRESS PREVIOUS
+            prevExpress();
+            break;
+
+        case "ArrowLeft":   // REGULAR PREVIOUS
+            prevRegular();
+            break;
     }
 });
 
-// initialize display
+
+/* -------------------------------
+   INIT
+-------------------------------- */
+
 updateDisplay();
-window.speechSynthesis.onvoiceschanged = ()=>{ speechSynthesis.getVoices(); };
+
+window.speechSynthesis.onvoiceschanged = function(){
+    speechSynthesis.getVoices();
+};
 </script>
 
 </body>
 </html>
-
-
