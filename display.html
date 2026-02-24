@@ -242,7 +242,28 @@ document.addEventListener("keydown", function (e) {
     }
 
 });
+    function refreshDisplayFromStorage(){
+    const regCounter = parseInt(localStorage.getItem("regCounter")) || 0;
+    const expCounter = parseInt(localStorage.getItem("expCounter")) || 0;
+
+    document.getElementById("regNow").textContent = "R-" + String(regCounter).padStart(3,"0");
+    document.getElementById("expNow").textContent = "E-" + String(expCounter).padStart(3,"0");
+}
+
+// Initial load
+refreshDisplayFromStorage();
+
+// Listen for changes in localStorage (sync across tabs)
+window.addEventListener("storage", function(e){
+    if(e.key === "regCounter" || e.key === "expCounter"){
+        refreshDisplayFromStorage();
+    }
+});
+
+// Optional: still refresh every second as fallback
+setInterval(refreshDisplayFromStorage, 1000);
 </script>
 
 </body>
 </html>
+
