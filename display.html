@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Laboratory Queue</title>
+
+<style>
+body{
+    font-family:Arial, sans-serif;
+    background:#ffffff;
+    color:white;
+    padding:30px;
+}
+h1{text-align:center}
+.container{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    margin-top:30px;
+}
+h2{
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+.lane{
+    background:#40e469;
+    padding:30px;
+    border-radius:15px;
+    width:700px;
+    height: 700px;
+    text-align:center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.now{
+    font-size:200px;
+    margin:20px 0;
+    color:#ffffff;
+}
+#expNow{
+    color:#f97316;
+}
+button{
+    position: relative;
+    top: 40%;
+    padding:14px 22px;
+    font-size:18px;
+    cursor:pointer;
+    border:none;
+    border-radius:8px;
+}
+</style>
+</head>
+<body>
+
+<h1>Laboratory Now Serving</h1>
+
+<div class="container">
+
+    <div class="lane">
+        <h2>REGULAR LANE</h2>
+        <div class="now" id="regNow">R-000</div>
+        <button onclick="nextRegular()">NEXT REGULAR</button>
+    </div>
+
+    <div class="lane">
+        <h2>EXPRESS LANE</h2>
+        <div class="now" id="expNow">E-000</div>
+        <button onclick="nextExpress()">NEXT EXPRESS</button>
+    </div>
+
+</div>
+
+<script>
+let regCounter = 0;
+let expCounter = 0;
+
+/* voice will be unlocked on first button click */
+let voiceUnlocked = false;
+
+function unlockVoice(){
+    if(voiceUnlocked) return;
+
+    const u = new SpeechSynthesisUtterance("");
+    speechSynthesis.speak(u);   // must be inside user click
+    voiceUnlocked = true;
+}
+
+/* -------------------------
+   NEXT BUTTONS
+--------------------------*/
+
+function nextRegular(){
+
+    unlockVoice();
+
+    regCounter++;
+    const number = "R-" + String(regCounter).padStart(3,"0");
+
+    document.getElementById("regNow").textContent = number;
+
+    speak("Now serving regular lane, " + number.replace("-", " "));
+}
+
+function nextExpress(){
+
+    unlockVoice();
+
+    expCounter++;
+    const number = "E-" + String(expCounter).padStart(3,"0");
+
+    document.getElementById("expNow").textContent = number;
+
+    speak("Now serving express lane, " + number.replace("-", " "));
+}
+function prevExpress(){
+
+    if(expCounter <= 0) return;
+
+    expCounter--;
+
+    const number = "E-" + String(expCounter).padStart(3,"0");
+    document.getElementById("expNow").textContent = number;
+    speak("Now serving express lane, " + number.replace("-", " "));
+}
+
+function prevRegular(){
+
+    if(regCounter <= 0) return;
+
+    regCounter--;
+
+    const number = "R-" + String(regCounter).padStart(3,"0");
+    document.getElementById("regNow").textContent = number;
+        speak("Now serving regular lane, " + number.replace("-", " "));
+}
+/* -------------------------
+   SPEAK
+--------------------------*/
+function speak(text){
+
+    if(!("speechSynthesis" in window)) return;
+
+    // stop any previous speech
+    speechSynthesis.cancel();
+
+    // get available voices
+    const voices = speechSynthesis.getVoices();
+
+    // try to find a female voice
+    let femaleVoice = voices.find(v =>
+        /female|zira|samantha|alloy/i.test(v.name)
+    );
+
+    // fallback to default
+    if(!femaleVoice) femaleVoice = voices[0];
+
+    // speak twice
+    const msg1 = new SpeechSynthesisUtterance(text);
+    msg1.voice = femaleVoice;
+    msg1.rate = 0.9;
+
+    const msg2 = new SpeechSynthesisUtterance(text);
+    msg2.voice = femaleVoice;
+    msg2.rate = 0.9;
+
+    speechSynthesis.speak(msg1);
+    speechSynthesis.speak(msg2);
+}
+document.addEventListener("keydown", function (e) {
+
+    if (e.key === "ArrowUp") {
+        e.preventDefault();
+        nextExpress();       // ⬆ next express
+    }
+
+    if (e.key === "ArrowRight") {
+        e.preventDefault();
+        nextRegular();      // ➡ next regular
+    }
+
+    if (e.key === "ArrowDown") {
+        e.preventDefault();
+        prevExpress();      // ⬇ back express
+    }
+
+    if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        prevRegular();      // ⬅ back regular
+    }
+
+});
+</script>
+
+</body>
+</html>
